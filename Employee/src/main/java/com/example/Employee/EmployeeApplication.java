@@ -43,10 +43,7 @@ public class EmployeeApplication {
 		{
 			System.out.println(employeeDTO.getEmployeeName()+" "+employeeDTO.getEmployeeId()+" "+employeeDTO.getDepartment());
 		}
-		
-		
-		
-		
+			
 		context.close();
 	}
 
