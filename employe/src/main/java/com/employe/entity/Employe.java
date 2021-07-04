@@ -3,6 +3,7 @@ package com.employe.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import com.employe.dto.EmployeDTO;
 
@@ -10,8 +11,10 @@ import com.employe.dto.EmployeDTO;
 public class Employe {
 	@Id
 	@Column(name="emp_id")
+	@NotNull(message="Provide empId")
 	private int empId;
 	@Column(name="emp_name")
+	@NotNull(message="Provide empName")
     private String empName;
     private String department;
     @Column(name="base_location")

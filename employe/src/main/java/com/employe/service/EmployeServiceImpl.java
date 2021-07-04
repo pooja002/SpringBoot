@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.employe.dto.EmployeDTO;
 import com.employe.entity.Employe;
+import com.employe.exceptions.NoSuchEmployeException;
 import com.employe.repository.EmployeRepository;
 
 @Service("employeService")
@@ -25,16 +26,21 @@ public class EmployeServiceImpl implements EmployeService{
 	}
 
 	@Override
-	public void removeEmploye(int empId) {
-		repository.deleteById(empId);
-		
-	}
-
-	@Override
-	public EmployeDTO getEmploye(int empId) {
+	public Integer removeEmploye(int empId) throws NoSuchEmployeException {
 		Optional<Employe> optional = repository.findById(empId);
-		Employe employeEntity = optional.get();// Converting Optional<Customer> to Customer
-		EmployeDTO employeDTO = Employe.prepareEmployeDTO(employeEntity);
+		Employe employeEntity = optional.orElseThrow(()->new NoSuchEmployeException("Employee "+empId+ " Does Not Exist"));
+		if(!employeEntity.equals(null))
+		{
+		repository.deleteById(empId);
+		}
+		return empId;
+	}
+	
+	@Override
+	public EmployeDTO getEmploye(int empId) throws NoSuchEmployeException{
+		Optional<Employe> optional = repository.findById(empId);
+		Employe employeEntity = optional.orElseThrow(()->new NoSuchEmployeException("Employee "+empId+" Does Not Exist"));
+		EmployeDTO employeDTO = employeEntity.prepareEmployeDTO(employeEntity);
 		return employeDTO ;
 	
 	}
@@ -43,7 +49,7 @@ public class EmployeServiceImpl implements EmployeService{
 	public List<EmployeDTO> getAllEmployees()
 	{
 		List<Employe> empRep = repository.findAll();
-		List<EmployeDTO> empDto = new ArrayList<>();
+		List<EmployeDTO> empDtos = new ArrayList<>();
 		for(Employe emp : empRep)
 		{
 			EmployeDTO e = new EmployeDTO();
@@ -51,9 +57,9 @@ public class EmployeServiceImpl implements EmployeService{
 			e.setEmpName(emp.getEmpName());
 			e.setBaseLocation(emp.getBaseLocation());
 			e.setDepartment(emp.getDepartment());
-			empDto.add(e);
+			empDtos.add(e);
 		}
-		return empDto;
+		return empDtos;
 		
 	}
 
