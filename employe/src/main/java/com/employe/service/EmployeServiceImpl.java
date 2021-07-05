@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.employe.dto.EmployeDTO;
 import com.employe.entity.Employe;
 import com.employe.exceptions.NoSuchEmployeException;
 import com.employe.repository.EmployeRepository;
-
+@PropertySource("classpath:ValidationMessages.properties")
+@Transactional
 @Service("employeService")
 public class EmployeServiceImpl implements EmployeService{
 

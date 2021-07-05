@@ -10,6 +10,9 @@ import org.springframework.context.ApplicationContext;
 import com.employe.dto.EmployeDTO;
 import com.employe.service.EmployeService;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@EnableSwagger2
 @SpringBootApplication
 public class EmployeApplication implements CommandLineRunner{
 
