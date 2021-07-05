@@ -5,9 +5,9 @@ import javax.validation.constraints.NotNull;
 import com.employe.entity.Employe;
 
 public class EmployeDTO {
-	@NotNull(message="Please provide employee Id")
-	private int empId;
-	@NotNull(message="Please provide employee name")
+    @NotNull(message="Please provide employee Id")
+    private int empId;
+    @NotNull(message="Please provide employee name")
     private String empName;
     private String department;
     private String baseLocation;
@@ -19,8 +19,9 @@ public class EmployeDTO {
 		this.department = department;
 		this.baseLocation = baseLocation;
 	}
+	
 	public EmployeDTO() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	public int getEmpId() {
 		return empId;
