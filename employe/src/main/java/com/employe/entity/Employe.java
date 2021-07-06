@@ -11,13 +11,10 @@ import com.employe.dto.EmployeDTO;
 public class Employe {
 	@Id
 	@Column(name="emp_id")
-	@NotNull(message="Provide empId")
 	private int empId;
 	@Column(name="emp_name")
-	@NotNull(message="Provide empName")
     private String empName;
     private String department;
-    @Column(name="base_location")
     private String baseLocation;
     
     

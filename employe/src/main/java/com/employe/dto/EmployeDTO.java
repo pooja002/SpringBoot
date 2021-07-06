@@ -9,6 +9,7 @@ public class EmployeDTO {
     private int empId;
     @NotNull(message="Please provide employee name")
     private String empName;
+    @NotNull(message="Please provide department")
     private String department;
     private String baseLocation;
     

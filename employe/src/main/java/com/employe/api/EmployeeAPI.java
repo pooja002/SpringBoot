@@ -3,10 +3,12 @@ package com.employe.api;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import com.employe.exceptions.NoSuchEmployeException;
 import com.employe.service.EmployeService;
 
 @CrossOrigin
+@Validated
 @RestController
 @RequestMapping("/employees")
 public class EmployeeAPI {
@@ -35,12 +38,19 @@ public class EmployeeAPI {
 		return service.getAllEmployees();
 	}
 	
-	//Handling URI using PathVariable
-	@GetMapping(value="/getEmploye/{empId}")
+	//Handling URI using PathVariable and Versioning
+	@GetMapping(value="/getEmploye/{empId}",params="version=1") 
 	public EmployeDTO getByEmployeId(@PathVariable("empId") int empId) throws NoSuchEmployeException
 	{
 		return service.getEmploye(empId);
 	}
+	@GetMapping(value="/getEmploye/{empId}",params="version=2")
+	public String getByEmployeIdv2(@PathVariable("empId") int empId) throws NoSuchEmployeException
+	{
+		EmployeDTO e = service.getEmploye(empId);
+		return e.getEmpId()+" "+" "+e.getEmpName()+e.getDepartment();
+	}
+	
 	
 	//Handling URI using RequestParam
 	@GetMapping(value="/getEmployeRP")
@@ -50,7 +60,7 @@ public class EmployeeAPI {
 	}
 	
 	@PostMapping("/")
-	public ResponseEntity addEmployee( @Valid @RequestBody EmployeDTO employeDTO)
+	public ResponseEntity addEmployee( @Valid @RequestBody @NotNull EmployeDTO employeDTO)
 	{
 		
 		service.addEmploye(employeDTO);
