@@ -1,15 +1,20 @@
 package com.employe.dto;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.employe.entity.Employe;
+import org.springframework.validation.annotation.Validated;
 
+import com.employe.entity.Employe;
+@Validated
 public class EmployeDTO {
-    @NotNull(message="Please provide employee Id")
+    @NotNull(message="{EmpId.absent}")
+    @Min(value = 1000, message = "The value must be greater than 1000")
     private int empId;
-    @NotNull(message="Please provide employee name")
+    @NotEmpty(message="{empName.absent}")
     private String empName;
-    @NotNull(message="Please provide department")
+    @NotEmpty(message="Please provide department")
     private String department;
     private String baseLocation;
     

@@ -3,7 +3,7 @@ package com.employe.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+
 
 import com.employe.dto.EmployeDTO;
 

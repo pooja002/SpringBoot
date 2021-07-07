@@ -3,12 +3,9 @@ package com.employe.api;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +20,11 @@ import com.employe.dto.EmployeDTO;
 import com.employe.exceptions.NoSuchEmployeException;
 import com.employe.service.EmployeService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @CrossOrigin
-@Validated
 @RestController
 @RequestMapping("/employees")
 public class EmployeeAPI {
@@ -33,6 +33,10 @@ public class EmployeeAPI {
 	EmployeService service;
 	
 	@GetMapping("/getEmployees")
+	@ApiOperation(value="Fetch all the employees of Dunder Mifflin",response=EmployeDTO.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Fetched the customers successfully"),
+			@ApiResponse(code = 404, message = "Customer details not found") })
+	
 	public List<EmployeDTO> getEmploye()
 	{
 		return service.getAllEmployees();
@@ -60,7 +64,7 @@ public class EmployeeAPI {
 	}
 	
 	@PostMapping("/")
-	public ResponseEntity addEmployee( @Valid @RequestBody @NotNull EmployeDTO employeDTO)
+	public ResponseEntity addEmployee( @Valid @RequestBody EmployeDTO employeDTO)
 	{
 		
 		service.addEmploye(employeDTO);

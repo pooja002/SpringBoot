@@ -1,5 +1,7 @@
 package com.employe.exceptions;
 
+import java.util.stream.Collectors;
+
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
@@ -31,11 +33,17 @@ public class ExceptionControllerAdvice {
 		return new ResponseEntity<>(error,HttpStatus.OK);
 	}
 	
+//	pathExceptionHandler
 	  @ExceptionHandler(ConstraintViolationException.class)
-	  public final ResponseEntity<Object> handleConstraintViolationExceptions(
+	  public  ResponseEntity<ErrorMessage> handleConstraintViolationExceptions(
 	      ConstraintViolationException ex) {
-	    String exceptionResponse = String.format("Invalid input parameters: %s\n", ex.getMessage());
-	    return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+		  
+		  ErrorMessage error = new ErrorMessage();
+		  error.setErrorCode(HttpStatus.BAD_REQUEST.value());
+//		  error.setMessage(ex.getConstraintViolations().stream().map(x->ex.getMessage()).collect(Collectors.joining(",")));
+		 String eMess = (ex.getConstraintViolations().stream().map(x->ex.getMessage()).collect(Collectors.joining(",")));
+		  error.setMessage(eMess);
+		 return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	  }
 
 }
