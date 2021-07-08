@@ -14,7 +14,7 @@ import com.employe.dto.ErrorMessage;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
-
+// Handle invalid @Valid objects
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorMessage> customValidationErrorHandling(MethodArgumentNotValidException ex)
 	{
@@ -33,7 +33,7 @@ public class ExceptionControllerAdvice {
 		return new ResponseEntity<>(error,HttpStatus.OK);
 	}
 	
-//	pathExceptionHandler
+//	handle @validated contraints fail
 	  @ExceptionHandler(ConstraintViolationException.class)
 	  public  ResponseEntity<ErrorMessage> handleConstraintViolationExceptions(
 	      ConstraintViolationException ex) {

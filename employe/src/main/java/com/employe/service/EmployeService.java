@@ -5,8 +5,8 @@ import com.employe.dto.EmployeDTO;
 import com.employe.exceptions.NoSuchEmployeException;
 
 public interface EmployeService {
-	public void addEmploye(EmployeDTO Employe);
-	public Integer removeEmploye(int empId) throws NoSuchEmployeException;
+	public String addEmploye(EmployeDTO Employe);
+	public String removeEmploye(int empId) throws NoSuchEmployeException;
 	public EmployeDTO getEmploye(int empId) throws NoSuchEmployeException;
 	public List<EmployeDTO> getAllEmployees();
 }

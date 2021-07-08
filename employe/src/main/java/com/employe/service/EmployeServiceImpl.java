@@ -24,29 +24,44 @@ public class EmployeServiceImpl implements EmployeService{
 
 	
 	@Override
-	public void addEmploye(EmployeDTO Employe) {
-		repository.saveAndFlush(EmployeDTO.prepareEmployeEntity(Employe));
-
+	public String addEmploye(EmployeDTO employe)  {
+//		Optional<Employe> optional = repository.findById(employe.getEmpId());
+//		Employe employeEntity = optional.get();
+//		if(!employeEntity.equals(null))
+//		{
+//			throw new NoSuchEmployeException("Employee Already present");
+//		}
+//		else
+//		{
+		repository.saveAndFlush(EmployeDTO.prepareEmployeEntity(employe));
+		return "New Employee Added with "+employe.getEmpId();
 	}
 
 	@Override
-	public Integer removeEmploye(int empId) throws NoSuchEmployeException {
+	public String removeEmploye(int empId) throws NoSuchEmployeException {
 		Optional<Employe> optional = repository.findById(empId);
 		Employe employeEntity = optional.orElseThrow(()->new NoSuchEmployeException("Employee "+empId+ " Does Not Exist"));
 		if(!employeEntity.equals(null))
 		{
 		repository.deleteById(empId);
 		}
-		return empId;
+		return "Employee with "+empId+" deleted successfully";
 	}
 	
 	@Override
 	public EmployeDTO getEmploye(int empId) throws NoSuchEmployeException{
 		Optional<Employe> optional = repository.findById(empId);
 		Employe employeEntity = optional.orElseThrow(()->new NoSuchEmployeException("Employee "+empId+" Does Not Exist"));
+		
+		if(employeEntity.equals(null))
+		{
+		return new EmployeDTO();
+		}
+		else
+		{
 		EmployeDTO employeDTO = employeEntity.prepareEmployeDTO(employeEntity);
 		return employeDTO ;
-	
+		}
 	}
 	
 	@Override

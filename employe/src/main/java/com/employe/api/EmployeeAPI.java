@@ -32,7 +32,7 @@ public class EmployeeAPI {
 	@Autowired
 	EmployeService service;
 	
-	@GetMapping("/getEmployees")
+	@GetMapping(value="/getEmployees",produces="application/json")
 	@ApiOperation(value="Fetch all the employees of Dunder Mifflin",response=EmployeDTO.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Fetched the customers successfully"),
 			@ApiResponse(code = 404, message = "Customer details not found") })
@@ -43,17 +43,26 @@ public class EmployeeAPI {
 	}
 	
 	//Handling URI using PathVariable and Versioning
-	@GetMapping(value="/getEmploye/{empId}",params="version=1") 
-	public EmployeDTO getByEmployeId(@PathVariable("empId") int empId) throws NoSuchEmployeException
+	@GetMapping(value="/getEmploye/{empId}") 
+	public ResponseEntity<EmployeDTO> getByEmployeId(@PathVariable("empId") int empId) throws NoSuchEmployeException
 	{
-		return service.getEmploye(empId);
+		EmployeDTO emp = new EmployeDTO();
+		if(service.getEmploye(empId).equals("Employee "+empId+" Does Not Exist"))
+		{
+			return new ResponseEntity<>(emp,HttpStatus.OK);
+		}
+		else
+		{
+		return  new ResponseEntity<>(service.getEmploye(empId),HttpStatus.BAD_REQUEST);
+		}
 	}
-	@GetMapping(value="/getEmploye/{empId}",params="version=2")
-	public String getByEmployeIdv2(@PathVariable("empId") int empId) throws NoSuchEmployeException
-	{
-		EmployeDTO e = service.getEmploye(empId);
-		return e.getEmpId()+" "+" "+e.getEmpName()+e.getDepartment();
-	}
+	
+//	@GetMapping(value="/getEmploye/{empId}",params="version=2")
+//	public String getByEmployeIdv2(@PathVariable("empId") int empId) throws NoSuchEmployeException
+//	{
+//		EmployeDTO e = service.getEmploye(empId);
+//		return e.getEmpId()+" "+" "+e.getEmpName()+e.getDepartment();
+//	}
 	
 	
 	//Handling URI using RequestParam
@@ -64,19 +73,25 @@ public class EmployeeAPI {
 	}
 	
 	@PostMapping("/")
-	public ResponseEntity addEmployee( @Valid @RequestBody EmployeDTO employeDTO)
+	public ResponseEntity addEmployee( @Valid @RequestBody EmployeDTO employeDTO) throws NoSuchEmployeException
 	{
 		
 		service.addEmploye(employeDTO);
-		return new ResponseEntity<>("New row Created",HttpStatus.CREATED);	
+		return new ResponseEntity<>("New row Created with employee Id "+employeDTO.getEmpId(),HttpStatus.CREATED);	
 	}
 	
 	//Handling URI using PathVariable
 	@DeleteMapping(value="/{empId}")
 	public ResponseEntity<String>  deleteEmployee(@PathVariable("empId") int empId) throws NoSuchEmployeException
 	{
-		service.removeEmploye(empId);
-		return new ResponseEntity<>("Employee with deleted sucessfully", HttpStatus.OK);
+		if(service.removeEmploye(empId).equals("Employee "+empId+" Does Not Exist"))
+		{
+			return new ResponseEntity<>("Employee "+empId+" Does Not Exist", HttpStatus.OK);
+		}
+		else
+		{
+		return new ResponseEntity<>("Employee with "+empId+" deleted sucessfully", HttpStatus.OK);
+		}
 	}
 	
 	
